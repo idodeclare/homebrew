@@ -2,26 +2,28 @@ require 'formula'
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.6.11/node-v0.6.11.tar.gz'
-  md5 '2f554353e831b8a22e6a85c676374374'
+  url 'http://nodejs.org/dist/v0.6.17/node-v0.6.17.tar.gz'
+  md5 '55641d5d280cdd4e0c030c203107599d'
 
   head 'https://github.com/joyent/node.git'
 
   devel do
-    url 'http://nodejs.org/dist/v0.7.4/node-v0.7.4.tar.gz'
-    md5 'dd225092411cc85615313d4058f765c9'
+    url 'http://nodejs.org/dist/v0.7.8/node-v0.7.8.tar.gz'
+    md5 '552b1e97539f2d574a2c56b849dea6a5'
   end
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
 
-  fails_with_llvm :build => 2326
+  fails_with :llvm do
+    build 2326
+  end
 
   # Stripping breaks dynamic loading
   skip_clean :all
 
   def options
-    [["--debug", "Build with debugger hooks."]]
+    [["--enable-debug", "Build with debugger hooks."]]
   end
 
   def install
@@ -34,7 +36,7 @@ class Node < Formula
 
     # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
     args = ["--prefix=#{prefix}", "--without-npm"]
-    args << "--debug" if ARGV.include? '--debug'
+    args << "--debug" if ARGV.include? '--enable-debug'
 
     system "./configure", *args
     system "make install"
