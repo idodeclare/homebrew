@@ -20,6 +20,7 @@ class Gimp < Formula
   depends_on 'gettext'
   depends_on 'intltool'
   depends_on 'gdk-pixbuf'
+  depends_on 'd-bus'
   depends_on 'dbus-glib'
 
   depends_on 'libart' => :optional
